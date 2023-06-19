@@ -4,28 +4,35 @@
 using namespace std;
 using std::cin;
 
-
+//Назначение символам карты(0-12)
 string rankPicture[13] = { "2", "3", "4", "5", "6", "7", "8","9", "10", "V", "D", "K", "A"};
+//Назначение ценности карты(0-12)
 int points[13] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11};
-string computer = "";
-string user = "";
 
+//карты в руке дилера и плеера
+string dealerPack = "";
+string playersPack = "";
+
+//Создаем функцию рисующию карту по ее номеру(0-52)
 void showCart(int cart)
 {
-	char asciiChar = static_cast<char>(cart / 13 + 3);
-	cout << asciiChar;
-	cout << rankPicture[cart % 13];
+	int mast = cart / 13; //Номер масти
+	int rank = cart % 13; //Номер карты в масте
+	char mastChar = static_cast<char>(mast + 3);//Находим символ масти по номеру
+	cout << mastChar;//выводим символ масти карты
+	cout << rankPicture[rank];//выводим символ ценности карты
 }
+//Создаем функцию расчета очков в руке
 int calculPoint(string pack) 
 {
 	int sum = 0;
 	for (int i = 0; i < pack.length(); i++)
 	{
-		int card = pack[i];
-		int rank = card % 13;
-		int point = points[rank];
-		if (point == 11 && sum > 10) point = 1;
-		sum = sum + point;
+		int card = pack[i];//Получаем номер карты
+		int rank = card % 13;//Номер карты в масте
+		int point = points[rank]; //Получаем ценность карты
+		if (point == 11 && sum > 10) point = 1;//Уточняем ценность для туза
+		sum = sum + point; //Формеруем суммму
 	}
 	return sum;
 
@@ -58,47 +65,37 @@ int main()
 
 	//Раздача карт
 	srand(time(NULL));
-	user = user + char(rand() % 52);
-	computer = computer + char(rand() % 52);
-	user = user + char(rand() % 52);
-	computer = computer + char(rand() % 52);
+	playersPack = playersPack + char(rand() % 52);
+	dealerPack = dealerPack + char(rand() % 52);
+	playersPack = playersPack + char(rand() % 52);
+	dealerPack = dealerPack + char(rand() % 52);
 
 	while(true)
 	{
 		cout << "************ Ваш ход ************\n";
-		//Показываем карты	user		
+		//1. Показываем карты	Игрока		
 		cout << "Ваши карты:      ";
-		for (int i = 0; i < user.length(); i++)
+		for (int i = 0; i < playersPack.length(); i++)
 		{
-			showCart(user[i]);
+			showCart(playersPack[i]);
 			cout << " ";
 		}
 		cout << "\n";
 
-		//Показываем карты	computer
+		//2. Показываем карту дилера
 		cout << "Карты компютера: ";
-		showCart(computer[0]);
+		showCart(dealerPack[0]);
 		cout << " **";
 		cout << "\n";
 
-		//Проверка пользыывателя
-		int point = calculPoint(user);
-		if (point == 21) 
+		//3. Проверяем на перебор
+		if (calculPoint(playersPack) > 21)
 		{
-			if (user.length() > 2)
-			{
-				break;
-			}
-			cout << "User выиграл\n";
-			return 0;
-		}
-		if (point > 21)
-		{
-			cout << "User проиграл\n";
+			cout << "Перебор! Игрок проиграл!\n";
 			return 0;
 		}
 
-		//Запрашиваем действие user		
+		//4. Запрашиваем действие Игрока	
 		char answer;
 		cout << "Взять карту (y / n): ";
 		cin >> answer;
@@ -106,63 +103,67 @@ int main()
 		{
 			break;
 		} 
+		
 		cout << "\n";
-		//Добавлем новую карту пользывателя
-		user = user + char(rand() % 52);
+		//5. Добавлем новую карту Игроку
+		playersPack = playersPack + char(rand() % 52);
 	}
 	while(true)
-	{
-		//Показываем карты	user		
+	{	
+		cout << "************ Ход дилера ************\n";
+
+		//1. Показываем карты	Игрока		
 		cout << "Ваши карты:      ";
-		for (int i = 0; i < user.length(); i++)
+		for (int i = 0; i < playersPack.length(); i++)
 		{
-			showCart(user[i]);
+			showCart(playersPack[i]);
 			cout << " ";
 		}
 		cout << "\n";
 
-		//Показываем карты	computer
+		//2. Показываем карты дилера
 		cout << "Карты компютера: ";
-		for (int i = 0; i < computer.length(); i++)
+		for (int i = 0; i < dealerPack.length(); i++)
 		{
-			showCart(computer[i]);
+			showCart(dealerPack[i]);
 			cout << " ";
 		}
 		cout << "\n";
 
-		int point = calculPoint(computer);
-		
-		if (point == 21)
+		//3. Проверка нужна ли карта дилеру
+		if (calculPoint(dealerPack) > 16)
 		{
-			cout << "Computer выиграл\n";
-			return 0;
+			break;
 		}
-		if (point > 21)
-		{
-			cout << "Computer проиграл\n";
-			return 0;
-		}
-		int point_u = calculPoint(user);
-		if (point >= 17) 
-		{
-			if (point > point_u)
-			{
-				cout << "Computer выиграл\n";
-				return 0;
-			}
-			if (point == point_u)
-			{
-				cout << "Ничья\n";
-				return 0;
-			}
-			if (point < point_u)
-			{
-				cout << "User выиграл\n";
-				return 0;
-			}
-		}
-		cout << "************ Ход компютера ************\n";
-		computer = computer + char(rand() % 52);
+
+		//4. Диллер берет карты
+		dealerPack = dealerPack + char(rand() % 52);
 	}
-	
+	int dealers_point = calculPoint(dealerPack);
+	int players_point = calculPoint(playersPack);
+		if (dealers_point == 21)
+		{
+			cout << "Дилера выиграл\n";
+			return 0;
+		}
+		if (dealers_point > 21)
+		{
+			cout << "Игрок выиграл\n";
+			return 0;
+		}
+		if (dealers_point > players_point)
+		{
+			cout << "Игрок проиграл\n";
+			return 0;
+		}
+		if (dealers_point == players_point)
+		{
+			cout << "Ничья\n";
+			return 0;
+		}
+		if (dealers_point < players_point)
+		{
+			cout << "Игрок выиграл\n";
+			return 0;
+		}
 }
