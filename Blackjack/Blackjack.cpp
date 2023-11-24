@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <string>
 
 using namespace std;
@@ -57,7 +57,7 @@ int main()
 	cout << "    *                                                     *" << endl;
 	cout << "    *                                                     *" << endl;
 	cout << "    *******************************************************" << endl;
-	cout << "    *         Добро пожаловать в Blackjack(21-Очко)       *" << endl;
+	cout << "    *         Добро пожаловать в Blackjack(21)            *" << endl;
 	cout << "    *             Правила: тянуть по 1 карте              *" << endl;
 	cout << "    *      Главное не перебрать больше 21 очка в сумме    *" << endl;
 	cout << "    *                                                     *" << endl;
@@ -80,6 +80,7 @@ int main()
 			showCart(playersPack[i]);
 			cout << " ";
 		}
+		cout << "   У вас в руке: " << calculPoint(playersPack) << " Очков";
 		cout << "\n";
 
 		//2. Показываем карту дилера
@@ -119,6 +120,7 @@ int main()
 			showCart(playersPack[i]);
 			cout << " ";
 		}
+		cout << "   У вас в руке: " << calculPoint(playersPack) << " Очков";
 		cout << "\n";
 
 		//2. Показываем карты дилера
@@ -128,6 +130,7 @@ int main()
 			showCart(dealerPack[i]);
 			cout << " ";
 		}
+		cout << "   У диллера: " << calculPoint(dealerPack) << " Очков";
 		cout << "\n";
 
 		//3. Проверка нужна ли карта дилеру
@@ -143,7 +146,7 @@ int main()
 	int players_point = calculPoint(playersPack);
 		if (dealers_point == 21)
 		{
-			cout << "Дилера выиграл\n";
+			cout << "Дилер выиграл\n";
 			return 0;
 		}
 		if (dealers_point > 21)
