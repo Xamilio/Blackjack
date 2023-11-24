@@ -59,7 +59,7 @@ int main()
 	cout << "    *******************************************************" << endl;
 	cout << "    *         Добро пожаловать в Blackjack(21)            *" << endl;
 	cout << "    *             Правила: тянуть по 1 карте              *" << endl;
-	cout << "    *      Главное не перебрать больше 21 очка в сумме    *" << endl;
+	cout << "    *      Главное не взять больше 21 очка в сумме        *" << endl;
 	cout << "    *                                                     *" << endl;
 	cout << "    *******************************************************" << endl;
 
@@ -142,31 +142,42 @@ int main()
 		//4. Диллер берет карты
 		dealerPack = dealerPack + char(rand() % 52);
 	}
+	//Проверка кто выиграл 
 	int dealers_point = calculPoint(dealerPack);
 	int players_point = calculPoint(playersPack);
 		if (dealers_point == 21)
 		{
+			cout << "*********************\n";
 			cout << "Дилер выиграл\n";
+			cout << "*********************\n";
 			return 0;
 		}
 		if (dealers_point > 21)
 		{
-			cout << "Игрок выиграл\n";
+			cout << "*********************\n\n";
+			cout << "Игрок выиграл\n\n";
+			cout << "*********************\n";
 			return 0;
 		}
 		if (dealers_point > players_point)
 		{
+			cout << "*********************\n";
 			cout << "Игрок проиграл\n";
+			cout << "*********************\n";
 			return 0;
 		}
 		if (dealers_point == players_point)
 		{
+			cout << "*********************\n";
 			cout << "Ничья\n";
+			cout << "*********************\n";
 			return 0;
 		}
 		if (dealers_point < players_point)
 		{
+			cout << "*********************\n";
 			cout << "Игрок выиграл\n";
+			cout << "*********************\n";
 			return 0;
 		}
 }
