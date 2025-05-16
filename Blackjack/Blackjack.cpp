@@ -2,7 +2,6 @@
 #include <string>
 
 using namespace std;
-using std::cin;
 
 //Назначение символам карты(0-12)
 string rankPicture[13] = { "2", "3", "4", "5", "6", "7", "8","9", "10", "V", "D", "K", "A"};
